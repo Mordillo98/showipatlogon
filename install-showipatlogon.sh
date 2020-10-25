@@ -100,6 +100,28 @@ if ! [ -z "$(uname -r | grep arch)" ] ; then
 fi
 
 #
+# Ubuntu 20.4.1 LTS 
+#
+
+if ! [ -z "$(lsb_release -d | grep 20.04.1)" ] ; then
+
+  dpkg -s net-tools &> /dev/null
+
+  if ! [ $? -eq 0 ] ; then
+     printf "\n${YELLOW}Installing net-tools...${NC}\n"
+     apt-get install net-tools -y > /dev/null 
+  fi
+
+  dpkg -s moreutils &> /dev/null
+
+  if ! [ $? -eq 0 ] ; then
+     printf "\n${YELLOW}Installing moreutils...${NC}\n"
+     apt-get install moreutils -y > /dev/null
+  fi
+
+fi
+
+#
 # Copying all the scripts to the right places
 # making sure they have executable permissions.
 #
