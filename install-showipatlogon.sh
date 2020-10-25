@@ -217,7 +217,7 @@ sed -i "/ExecStart=/a ExecStartPre=${SED_INSTALL_FOLDER}\/showipatlogon.boot" $I
 cp ${INSTALL_FOLDER}/getty@.service /usr/lib/systemd/system/getty@.service
 rm ${INSTALL_FOLDER}/getty@.service
 
-systemctl daemon-reload
+systemctl daemon-reload 2> /dev/null
 
 # Final words?
 
