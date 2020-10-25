@@ -1,0 +1,53 @@
+#!/bin/bash	
+
+#
+# DECLARE VARIABLE
+#
+
+source /opt/showipatlogon/SETTINGS
+
+DELAY_IP=600
+
+#
+# MAIN
+#
+
+adapter=""
+adapter=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
+
+COUNTER=0
+until ! [ -z "$adapter" ] || [ ${COUNTER} = ${DELAY_IP} ] ; do
+   adapter=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
+   COUNTER=$(( $COUNTER + 1 ))
+done
+
+if [ -z "$adapter" ] ;
+  then adapter=lo
+fi
+
+printf "$NC"
+
+if [ "$adapter" = "lo" ] ; then 
+     printf "${RED}${adapter}: ${CYAN}$(ifdata -pa $adapter) \n"
+  else
+    for iface in $(ifconfig | cut -d ' ' -f1| tr ':' '\n' | awk NF)
+    do
+	if [ "$iface" != "lo" ] ; then
+	  COUNTER=0
+          IP=$(ifdata -pa $iface)
+          NOW=$(date +"%y-%m-%d %r")
+          until [ "${IP}" != "NON-IP" ] || [ ${COUNTER} = ${DELAY_IP} ] ; do
+  	      COUNTER=$(( $COUNTER + 1 ))
+              IP=$(ifdata -pa $iface)
+          done
+	    
+	  if [ "$IP" != "NON-IP" ]  ; then
+             printf "$NOW $iface $IP \n" >> ${INSTALL_FOLDER}/showipatlogon.log
+             printf "${GREEN}${iface}: ${CYAN}$(ifdata -pa ${iface}) \n"
+	  fi
+        fi
+    done 
+fi
+
+printf "$NC\n"
+
