@@ -63,7 +63,33 @@ chmod 771 /etc/issue
 # Making sure all the dependencies are installed
 #
 
-# 
+if ! [ -z "$(uname -v | grep Debian)" ] ; then
+   apt-get install lsb-release -y > /dev/null 
+fi
+ 
+#
+# Debian 10
+#
+
+if ! [ -z "$(lsb_release -d | grep "Debian GNU/Linux 10")" ] ; then
+
+  dpkg -s net-tools &> /dev/null
+
+  if ! [ $? -eq 0 ] ; then
+     printf "\n${YELLOW}Installing net-tools...${NC}\n"
+     apt-get install net-tools -y > /dev/null 
+  fi
+
+  dpkg -s moreutils &> /dev/null
+
+  if ! [ $? -eq 0 ] ; then
+     printf "\n${YELLOW}Installing moreutils...${NC}\n"
+     apt-get install moreutils -y > /dev/null
+  fi
+
+fi
+
+#
 # Fedora 32
 # 
 
@@ -158,12 +184,20 @@ $INSTALL_FOLDER/showipatlogon.boot
 # To make sure we can manually execute the program
 #
 
+if ! [ -z "$(lsb_release -d | grep "Debian GNU/Linux 10")" ] ; then
+
+  rm ${SYMBOLIC_LINK_FOLDER}/ifconfig 2> /dev/null
+  ln -s /usr/sbin/ifconfig $SYMBOLIC_LINK_FOLDER/ifconfig
+  chmod +x $SYMBOLIC_LINK_FOLDER/ifconfig
+
+fi
+
 rm ${SYMBOLIC_LINK_FOLDER}/showipatlogon 2> /dev/null
 rm ${SYMBOLIC_LINK_FOLDER}/showip 2> /dev/null
 ln -s $INSTALL_FOLDER/showipatlogon.postboot $SYMBOLIC_LINK_FOLDER/showipatlogon
 ln -s $INSTALL_FOLDER/showipatlogon.postboot $SYMBOLIC_LINK_FOLDER/showip
-chmod +x /usr/local/bin/showipatlogon
-chmod +x /usr/local/bin/showip
+chmod +x $SYMBOLIC_LINK_FOLDER/showipatlogon
+chmod +x $SYMBOLIC_LINK_FOLDER/showip
 chmod o=+w $INSTALL_FOLDER/showipatlogon.log 2> /dev/null
 
 #
