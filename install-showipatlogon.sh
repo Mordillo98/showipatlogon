@@ -59,7 +59,9 @@ fi
 touch /etc/issue 2> /dev/null
 chmod 771 /etc/issue
 
+#
 # Making sure all the dependencies are installed
+#
 
 # 
 # Fedora 32
@@ -82,7 +84,6 @@ fi
 #
 # Arch
 #
-
 
 if ! [ -z "$(uname -r | grep arch)" ] ; then
 
