@@ -63,6 +63,14 @@ chmod 771 /etc/issue
 # Making sure all the dependencies are installed
 #
 
+#
+# The command lsb-release needs to be available from the lsb_release package.
+#
+
+#
+# OpenSuse
+#
+
 if ! [ -z "$(find /usr/bin -name 'zypper')" ] ; then
 
   if ! [ -z "$(rpm -q lsb-release | grep "is not installed")" ] ; then
@@ -71,6 +79,10 @@ if ! [ -z "$(find /usr/bin -name 'zypper')" ] ; then
   fi
 
 fi
+
+#
+# Arch
+#
 
 if ! [ -z "$(find /usr/bin -name 'pacman')" ] ; then
 
@@ -81,9 +93,17 @@ if ! [ -z "$(find /usr/bin -name 'pacman')" ] ; then
 
 fi
 
+#
+# Debian
+#
+
 if ! [ -z "$(uname -v | grep Debian)" ] ; then
    apt-get install lsb-release -y > /dev/null 
 fi
+
+#
+# MoreUtils and Net-Tools need to be installed.
+#
 
 #
 # OpenSuse TumbleWeed
