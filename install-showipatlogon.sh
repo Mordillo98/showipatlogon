@@ -72,6 +72,15 @@ if ! [ -z "$(find /usr/bin -name 'zypper')" ] ; then
 
 fi
 
+if ! [ -z "$(find /usr/bin -name 'pacman')" ] ; then
+
+  if ! pacman -Qs lsb-release > /dev/null ; then
+     printf "\n${YELLOW}Installing lsb-release...${NC}\n"
+     pacman -S lsb-release --noconfirm > /dev/null
+  fi
+
+fi
+
 if ! [ -z "$(uname -v | grep Debian)" ] ; then
    apt-get install lsb-release -y > /dev/null 
 fi
@@ -156,7 +165,7 @@ fi
 # Arch
 #
 
-if ! [ -z "$(uname -r | grep arch)" ] ; then
+if ! [ -z "$(lsb_release -d | grep "Arch Linux")" ] ; then
 
   if ! pacman -Qs net-tools > /dev/null ; then
      printf "\n${YELLOW}Installing net-tools...${NC}\n"
