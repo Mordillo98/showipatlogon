@@ -77,6 +77,24 @@ if ! [ -z "$(uname -v | grep Debian)" ] ; then
 fi
 
 #
+# OpenSuse TumbleWeed
+#
+
+if ! [ -z "$(lsb_release -d | grep -i "Tumbleweed")" ] ; then
+
+	if ! [ -z "$(rpm -q net-tools-deprecated | grep "is not installed")" ] ; then
+           printf "\n${YELLOW}Installing net-tools-deprecated...${NC}\n"
+	   zypper -nq install net-tools-deprecated > /dev/null
+	fi	
+
+	if ! [ -z "$(rpm -q moreutils | grep "is not installed")" ] ; then
+           printf "\n${YELLOW}Installing moreutils...${NC}\n" 
+	   zypper -nq install moreutils > /dev/null
+	fi
+
+fi
+
+#
 # OpenSuse Leap 15.2
 #
 
