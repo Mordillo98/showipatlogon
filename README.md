@@ -14,4 +14,4 @@ Instructions.
 - cd showipatlogon
 - chmod +x install-showipatlogon.sh
 - chmod +x remove-showipatlogon.sh
-- ./showipatlogon
+- ./install-showipatlogon.sh
