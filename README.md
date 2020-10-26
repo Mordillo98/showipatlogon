@@ -8,6 +8,8 @@ Those are the current supported distros.
 2. Fedora 32
 3. Debian 10
 4. Ubuntu 20.4.1 LTS
+5. OpenSuse Leap 15.2
+6. OpenSuse Tumbleweed
 
 Install instructions.
 - git clone https://github.com/mordillo98/showipatlogon
