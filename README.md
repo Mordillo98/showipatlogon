@@ -1,5 +1,5 @@
 # showipatlogon
-Display the IP(s) of the network adapter(s) at logon.
+Display the IP(s) of the network adapter(s) at logon via the /etc/issue file.
 
 Those are the current supported distros.
 
