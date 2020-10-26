@@ -16,4 +16,4 @@ Install instructions.
 - chmod +x remove-showipatlogon.sh
 - ./install-showipatlogon.sh
 
-You can uninstall it simply doing the ./remove-showipatlogon.sh command.
+You can uninstall this software by simply doing the ./remove-showipatlogon.sh command.
