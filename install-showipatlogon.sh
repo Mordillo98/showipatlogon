@@ -63,10 +63,37 @@ chmod 771 /etc/issue
 # Making sure all the dependencies are installed
 #
 
+if ! [ -z "$(find /usr/bin -name 'zypper')" ] ; then
+
+  if ! [ -z "$(rpm -q lsb-release | grep "is not installed")" ] ; then
+    printf "\n${YELLOW}Installing lsb-release...${NC}\n"
+    zypper -nq install lsb-release > /dev/null
+  fi
+
+fi
+
 if ! [ -z "$(uname -v | grep Debian)" ] ; then
    apt-get install lsb-release -y > /dev/null 
 fi
- 
+
+#
+# OpenSuse Leap 15.2
+#
+
+if ! [ -z "$(lsb_release -d | grep "Leap 15.2")" ] ; then
+
+	if ! [ -z "$(rpm -q net-tools-deprecated | grep "is not installed")" ] ; then
+           printf "\n${YELLOW}Installing net-tools-deprecated...${NC}\n"
+	   zypper -nq install net-tools-deprecated > /dev/null
+	fi	
+
+	if ! [ -z "$(rpm -q moreutils | grep "is not installed")" ] ; then
+           printf "\n${YELLOW}Installing moreutils...${NC}\n" 
+	   zypper -nq install moreutils > /dev/null
+	fi
+
+fi
+
 #
 # Debian 10
 #

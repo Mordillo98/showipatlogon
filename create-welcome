@@ -13,11 +13,11 @@ DELAY_IP=600
 #
 
 adapter=""
-adapter=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
+adapter=$(route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
 
 COUNTER=0
 until ! [ -z "$adapter" ] || [ ${COUNTER} = ${DELAY_IP} ] ; do
-   adapter=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
+   adapter=$(route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
    COUNTER=$(( $COUNTER + 1 ))
 done
 
