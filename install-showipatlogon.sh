@@ -98,7 +98,12 @@ fi
 #
 
 if ! [ -z "$(uname -v | grep Debian)" ] ; then
-   apt-get install lsb-release -y > /dev/null 
+
+  if [ -z "$(apt list --installed 2>/dev/null | grep lsb-release)" ] ; then
+     printf "\n${YELLOW}Installing lsb-release...${NC}\n"
+     apt-get install lsb-release -y > /dev/null 
+  fi
+
 fi
 
 #
@@ -264,6 +269,9 @@ if ! [ -z "$(lsb_release -d | grep "Debian GNU/Linux 10")" ] ; then
   ln -s /usr/sbin/ifconfig $SYMBOLIC_LINK_FOLDER/ifconfig
   chmod +x $SYMBOLIC_LINK_FOLDER/ifconfig
 
+  rm ${SYMBOLIC_LINK_FOLDER}/route 2> /dev/null
+  ln -s /usr/sbin/route $SYMBOLIC_LINK_FOLDER/route
+  chmod +x $SYMBOLIC_LINK_FOLDER/route
 fi
 
 rm ${SYMBOLIC_LINK_FOLDER}/showipatlogon 2> /dev/null
