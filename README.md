@@ -10,6 +10,7 @@ Those are the current supported distros.
 4. Ubuntu 20.4.1 LTS
 5. OpenSuse Leap 15.2
 6. OpenSuse Tumbleweed
+7. CentOS 8
 
 Install instructions.
 - git clone https://github.com/mordillo98/showipatlogon
