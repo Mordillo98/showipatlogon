@@ -81,6 +81,19 @@ if ! [ -z "$(find /usr/bin -name 'zypper')" ] ; then
 fi
 
 #
+# Centos
+#
+
+if ! [ -z "$(find /usr/bin -name 'yum')" ] && [ -z "$(find /usr/bin -name 'apt')" ] ; then
+
+  if [ -z "$(yum list --installed | grep redhat-lsb-core)" ] ; then
+     printf "\n${YELLOW}Installing redhat-lsb-core...${NC}\n"
+     yum install redhat-lsb-core -y > /dev/null
+  fi 
+
+fi
+
+#
 # Arch
 #
 
@@ -163,7 +176,7 @@ if ! [ -z "$(lsb_release -d | grep "Debian GNU/Linux 10")" ] ; then
 
   if ! [ $? -eq 0 ] ; then
      printf "\n${YELLOW}Installing moreutils...${NC}\n"
-     apt-get install moreutils -y > /dev/null
+     apt-get install perl-List-MoreUtils -y > /dev/null
   fi
 
 fi
@@ -182,6 +195,31 @@ if ! [ -z "$(uname -r | grep fc32)" ] ; then
   if [ -z "$(rpm -qa | grep moreutils)" ] > /dev/null ; then
      printf "\n${YELLOW}Installing moreutils...${NC}\n"
      dnf install moreutils -y > /dev/null
+  fi
+
+fi
+
+#
+# Centos 8
+# 
+
+if ! [ -z "$(lsb_release -d | grep "CentOS Linux release 8")" ] ; then
+
+  if [ -z "$(rpm -qa | grep net-tools)" ] > /dev/null ; then
+     printf "\n${YELLOW}Installing net-tools...${NC}\n"
+     yum install net-tools -y > /dev/null
+  fi
+
+  if [ -z "$(rpm -qa | grep epel-release)" ] > /dev/null ; then
+     printf "\n${YELLOW}Installing epel-release...${NC}\n"
+     yum install epel-release -y > /dev/null
+     printf "\n${YELLOW}Enabling PowerTools...${NC}\n"
+     yum config-manager --set-enabled PowerTools > /dev/null
+  fi
+
+  if [ -z "$(rpm -qa | grep moreutils)" ] > /dev/null ; then
+     printf "\n${YELLOW}Installing moreutils...${NC}\n"
+     yum install moreutils -y > /dev/null
   fi
 
 fi
