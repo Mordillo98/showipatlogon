@@ -11,6 +11,7 @@ Those are the current supported distros.
 5. OpenSuse Leap 15.2
 6. OpenSuse Tumbleweed
 7. CentOS 8
+8. RHEL 8
 
 Install instructions.
 - git clone https://github.com/mordillo98/showipatlogon
