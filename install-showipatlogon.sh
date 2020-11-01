@@ -81,7 +81,7 @@ if ! [ -z "$(find /usr/bin -name 'zypper')" ] ; then
 fi
 
 #
-# Centos
+# Centos / RHEL
 #
 
 if ! [ -z "$(find /usr/bin -name 'yum')" ] && [ -z "$(find /usr/bin -name 'apt')" ] ; then
@@ -195,6 +195,36 @@ if ! [ -z "$(uname -r | grep fc32)" ] ; then
   if [ -z "$(rpm -qa | grep moreutils)" ] > /dev/null ; then
      printf "\n${YELLOW}Installing moreutils...${NC}\n"
      dnf install moreutils -y > /dev/null
+  fi
+
+fi
+
+#
+# RHEL 8
+# 
+
+if ! [ -z "$(lsb_release -d | grep "Red Hat Enterprise Linux release 8")" ] ; then
+
+  if [ -z "$(rpm -qa | grep net-tools)" ] > /dev/null ; then
+     printf "\n${YELLOW}Installing net-tools...${NC}\n"
+     yum install net-tools -y > /dev/null
+  fi
+
+  if [ -z "$(rpm -qa | grep epel-release)" ] > /dev/null ; then
+     printf "\n${YELLOW}Installing epel-release...${NC}\n"
+     yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y > /dev/null
+  fi
+
+  ARCH=$( /bin/arch )
+  
+  if [ -z "$(subscription-manager repos --list-enabled | grep codeready-builder-for-rhel-8-${ARCH}-rpms)" ] ; then
+    printf "\n${YELLOW}Enabling CodeReady-Builder...${NC}\n"
+    subscription-manager repos --enable "codeready-builder-for-rhel-8-${ARCH}-rpms" > /dev/null
+  fi
+
+  if [ -z "$(rpm -qa | grep moreutils)" ] > /dev/null ; then
+     printf "\n${YELLOW}Installing moreutils...${NC}\n"
+     yum install moreutils -y > /dev/null
   fi
 
 fi
