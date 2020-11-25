@@ -6,7 +6,7 @@
 
 source /opt/showipatlogon/SETTINGS
 
-DELAY_IP=600
+DELAY_IP=800
 
 #
 # MAIN
