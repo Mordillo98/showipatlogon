@@ -6,7 +6,13 @@
 
 source /opt/showipatlogon/SETTINGS
 
-DELAY_IP=1000
+DELAY_IP=10   # How many secs to wait until we timeout to find an IP address.
+
+if [ $1 == "nowait" ] ; then
+  NOWAIT="yes"
+else
+  NOWAIT="no"
+fi
 
 #
 # MAIN
@@ -15,11 +21,23 @@ DELAY_IP=1000
 adapter=""
 adapter=$(route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
 
-COUNTER=0
-until ! [ -z "$adapter" ] || [ ${COUNTER} = ${DELAY_IP} ] ; do
-   adapter=$(route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
-   COUNTER=$(( $COUNTER + 1 ))
-done
+if [ $NOWAIT == "no" ] ; then
+  COUNTER=0
+  FIRST_TIME=yes
+  until ! [ -z "$adapter" ] || [ ${COUNTER} = ${DELAY_IP} ] ; do
+     adapter=$(route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
+     COUNTER=$(( $COUNTER + 1 ))
+     if [ $FIRST_TIME == "yes" ] && [ $COUNTER == 3 ] ; then
+         printf "Looking for an IP address." > /dev/tty0
+         FIRST_TIME=no
+       else
+         if (( $COUNTER > 3 )) ; then
+           printf "." > /dev/tty0
+         fi
+     fi
+     sleep 1
+  done
+fi
 
 if [ -z "$adapter" ] ;
   then adapter=lo
@@ -32,20 +50,13 @@ if [ "$adapter" = "lo" ] ; then
   else
     for iface in $(ifconfig | cut -d ' ' -f1| tr ':' '\n' | awk NF)
     do
-	if [ "$iface" != "lo" ] ; then
-	  COUNTER=0
           IP=$(ifdata -pa $iface)
           NOW=$(date +"%y-%m-%d %r")
-          until [ "${IP}" != "NON-IP" ] || [ ${COUNTER} = ${DELAY_IP} ] ; do
-  	      COUNTER=$(( $COUNTER + 1 ))
-              IP=$(ifdata -pa $iface)
-          done
 	    
-	  if [ "$IP" != "NON-IP" ]  ; then
+	  if [ "$IP" != "NON-IP" ] && [ "$iface" != "lo" ]  ; then
              printf "$NOW $iface $IP \n" >> ${INSTALL_FOLDER}/showipatlogon.log
              printf "${GREEN}${iface}: ${CYAN}$(ifdata -pa ${iface}) \n"
 	  fi
-        fi
     done 
 fi
 

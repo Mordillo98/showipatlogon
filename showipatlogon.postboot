@@ -17,4 +17,4 @@ source /opt/showipatlogon/SETTINGS
 ##
 
 printf "\n"
-${INSTALL_FOLDER}/create-welcome
+${INSTALL_FOLDER}/create-welcome nowait
