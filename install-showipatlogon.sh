@@ -322,12 +322,6 @@ if ! [ -f "${INSTALL_FOLDER}/issue_bck" ] ; then
 fi
 
 #
-# Let's show the ip at logon on the next logoff/reboot
-#
-
-$INSTALL_FOLDER/showipatlogon.boot 
-
-#
 # To make sure we can manually execute the program
 #
 
