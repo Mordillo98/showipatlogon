@@ -54,7 +54,9 @@ if [ "$adapter" = "lo" ] ; then
           NOW=$(date +"%y-%m-%d %r")
 	    
 	  if [ "$IP" != "NON-IP" ] && [ "$iface" != "lo" ]  ; then
-             printf "$NOW $iface $IP \n" >> ${INSTALL_FOLDER}/showipatlogon.log
+             if [ $NOWAIT == "no" ] ; then
+	       printf "$NOW $iface $IP \n" >> ${INSTALL_FOLDER}/showipatlogon.log
+             fi
              printf "${GREEN}${iface}: ${CYAN}$(ifdata -pa ${iface}) \n"
 	  fi
     done 
